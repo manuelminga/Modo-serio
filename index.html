@@ -526,6 +526,63 @@
         z-index:1;
     }
 
+    .youtube-player{
+        position:absolute;
+        inset:0;
+        z-index:1;
+    }
+
+    .video-fallback{
+        position:absolute;
+        inset:0;
+        z-index:1;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding:24px;
+        text-align:center;
+        background:
+            radial-gradient(circle at top, rgba(255,107,143,0.18), transparent 35%),
+            linear-gradient(180deg, rgba(13,22,37,0.95), rgba(5,10,18,0.98));
+    }
+
+    .video-fallback.hidden{
+        display:none;
+    }
+
+    .video-fallback-inner{
+        width:min(100%, 420px);
+        display:grid;
+        gap:14px;
+    }
+
+    .video-fallback-title{
+        margin:0;
+        font-family:"Cormorant Garamond", serif;
+        font-size:2rem;
+        color:var(--text);
+    }
+
+    .video-fallback-text{
+        margin:0;
+        color:#d8dfeb;
+        line-height:1.7;
+    }
+
+    .video-link{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        min-height:52px;
+        padding:14px 22px;
+        border-radius:999px;
+        text-decoration:none;
+        font-weight:800;
+        color:#09111d;
+        background:linear-gradient(135deg, #ff7b9c, #ffd6a5);
+        box-shadow:0 16px 32px rgba(255,107,143,0.28);
+    }
+
     .video-caption{
         padding:16px 20px 22px;
         color:var(--muted);
@@ -639,13 +696,23 @@ y cada latido que pronuncia tu nombre.
             <button class="close-video" id="closeVideoBtn" aria-label="Cerrar video">×</button>
         </div>
         <div class="video-wrap" id="videoContainer">
-            <iframe
-                id="musicFrame"
-                src=""
-                title="Video musical"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen>
-            </iframe>
+            <div id="youtubePlayer" class="youtube-player" aria-hidden="true"></div>
+            <div class="video-fallback hidden" id="videoFallback">
+                <div class="video-fallback-inner">
+                    <h3 class="video-fallback-title">Esta canción va aquí</h3>
+                    <p class="video-fallback-text">
+                        Ese video no permite reproducirse dentro del cuadro. Tócalo aquí y se abre directo en YouTube.
+                    </p>
+                    <a
+                        class="video-link"
+                        id="videoLink"
+                        href="https://youtu.be/whdnNvybrF4?si=3wjlZDrQsq8ENmcV"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        Abrir video
+                    </a>
+                </div>
+            </div>
             <canvas id="fireworks"></canvas>
             <div class="hearts-layer" id="heartsLayer" aria-hidden="true"></div>
         </div>
@@ -654,7 +721,8 @@ y cada latido que pronuncia tu nombre.
 </div>
 
 <script>
-    const musicVideoUrl = "https://www.youtube.com/watch?v=jJRvUOVxPqA&list=RDjJRvUOVxPqA&start_radio=1";
+    const musicVideoUrl = "https://youtu.be/whdnNvybrF4?si=3wjlZDrQsq8ENmcV";
+    const musicVideoId = "whdnNvybrF4";
 
     const openLetterBtn = document.getElementById("openLetterBtn");
     const envelope = document.getElementById("envelope");
@@ -664,8 +732,12 @@ y cada latido que pronuncia tu nombre.
     const videoModal = document.getElementById("videoModal");
     const closeVideoBtn = document.getElementById("closeVideoBtn");
     const videoContainer = document.getElementById("videoContainer");
-    const musicFrame = document.getElementById("musicFrame");
+    const youtubePlayerNode = document.getElementById("youtubePlayer");
+    const videoFallback = document.getElementById("videoFallback");
+    const videoLink = document.getElementById("videoLink");
     const heartsLayer = document.getElementById("heartsLayer");
+    let youtubePlayer = null;
+    let youtubeApiPromise = null;
 
     openLetterBtn.addEventListener("click", () => {
         envelope.classList.toggle("open");
@@ -687,22 +759,102 @@ y cada latido que pronuncia tu nombre.
 
     yesBtn.addEventListener("click", () => {
         response.textContent = "Sabía que este momento iba a ser hermoso.";
+        openVideo();
         launchFireworks();
         launchHearts();
-        openVideo();
     });
 
+    function showVideoFallback(){
+        videoFallback.classList.remove("hidden");
+        videoLink.href = musicVideoUrl;
+    }
+
+    function hideVideoFallback(){
+        videoFallback.classList.add("hidden");
+    }
+
+    function loadYouTubeApi(){
+        if (window.YT && window.YT.Player) {
+            return Promise.resolve(window.YT);
+        }
+
+        if (youtubeApiPromise) {
+            return youtubeApiPromise;
+        }
+
+        youtubeApiPromise = new Promise((resolve, reject) => {
+            const previousReady = window.onYouTubeIframeAPIReady;
+            const script = document.createElement("script");
+            script.src = "https://www.youtube.com/iframe_api";
+            script.async = true;
+            script.onerror = () => reject(new Error("youtube-api-load-failed"));
+
+            window.onYouTubeIframeAPIReady = () => {
+                if (typeof previousReady === "function") {
+                    previousReady();
+                }
+                resolve(window.YT);
+            };
+
+            document.head.appendChild(script);
+        });
+
+        return youtubeApiPromise;
+    }
+
+    function ensureYouTubePlayer(){
+        return loadYouTubeApi().then((YT) => {
+            if (youtubePlayer) {
+                return youtubePlayer;
+            }
+
+            youtubePlayer = new YT.Player(youtubePlayerNode, {
+                videoId: musicVideoId,
+                playerVars: {
+                    autoplay: 1,
+                    playsinline: 1,
+                    rel: 0
+                },
+                events: {
+                    onReady: (event) => {
+                        hideVideoFallback();
+                        event.target.playVideo();
+                    },
+                    onError: () => {
+                        showVideoFallback();
+                    }
+                }
+            });
+
+            return youtubePlayer;
+        });
+    }
+
     function openVideo(){
-        musicFrame.src = musicVideoUrl;
+        hideVideoFallback();
+        videoLink.href = musicVideoUrl;
         videoModal.classList.add("show");
         videoModal.setAttribute("aria-hidden", "false");
         resizeCanvas();
+
+        ensureYouTubePlayer()
+            .then((player) => {
+                if (typeof player.loadVideoById === "function") {
+                    player.loadVideoById(musicVideoId);
+                }
+            })
+            .catch(() => {
+                showVideoFallback();
+            });
     }
 
     function closeVideo(){
         videoModal.classList.remove("show");
         videoModal.setAttribute("aria-hidden", "true");
-        musicFrame.src = "";
+
+        if (youtubePlayer && typeof youtubePlayer.stopVideo === "function") {
+            youtubePlayer.stopVideo();
+        }
     }
 
     closeVideoBtn.addEventListener("click", closeVideo);
