@@ -700,8 +700,8 @@ y cada latido que pronuncia tu nombre.
                 id="youtubePlayer"
                 class="youtube-player"
                 src="https://www.youtube.com/embed/whdnNvybrF4?autoplay=1&modestbranding=1&rel=0&playsinline=1"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen=""
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                allowfullscreen
                 title="Video de YouTube">
             </iframe>
             <div class="video-fallback hidden" id="videoFallback">
@@ -923,6 +923,50 @@ y cada latido que pronuncia tu nombre.
             animateFireworks();
         }
     }
+
+    // Detectar si el video falla en cargar y mostrar fallback
+    function detectVideoFallback(){
+        const youtubePlayer = document.getElementById("youtubePlayer");
+        const fallback = document.getElementById("videoFallback");
+        
+        // Intentar detectar si el iframe está bloqueado o no se carga
+        try {
+            youtubePlayer.addEventListener("load", () => {
+                // El video se cargó correctamente
+                fallback.classList.add("hidden");
+            });
+            
+            youtubePlayer.addEventListener("error", () => {
+                // El video falló - mostrar fallback
+                fallback.classList.remove("hidden");
+            });
+        } catch(e) {
+            console.log("No se puede detectar carga del iframe:", e.message);
+        }
+        
+        // Fallback timing: si después de 3 segundos el video aún no se ve, mostrar fallback
+        setTimeout(() => {
+            try {
+                if(youtubePlayer.offsetHeight === 0 || !youtubePlayer.src){
+                    fallback.classList.remove("hidden");
+                }
+            } catch(e) {
+                fallback.classList.remove("hidden");
+            }
+        }, 3000);
+    }
+
+    // Llamar la detección cuando se abre el modal de video
+    const originalOpenVideo = openVideo;
+    window.openVideo = function(){
+        originalOpenVideo();
+        setTimeout(detectVideoFallback, 100);
+    };
+
+    // También ejecutar en carga inicial
+    window.addEventListener("load", () => {
+        setTimeout(detectVideoFallback, 1000);
+    });
 </script>
 </body>
 </html>
