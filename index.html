@@ -60,7 +60,7 @@
     .aurora{
         position:fixed;
         inset:auto -10% 0 -10%;
-        height:44vh;
+        height:clamp(30vh, 50vw, 44vh);
         background:
             radial-gradient(circle at 25% 60%, rgba(255,107,143,0.16), transparent 32%),
             radial-gradient(circle at 75% 40%, rgba(102,179,255,0.12), transparent 30%),
@@ -70,9 +70,9 @@
     }
 
     .app{
-        width:min(1120px, calc(100% - 32px));
+        width:min(1120px, calc(100% - clamp(16px, 4vw, 32px)));
         margin:0 auto;
-        padding:28px 0 40px;
+        padding:clamp(16px, 5vw, 28px) 0 clamp(24px, 6vw, 40px);
         position:relative;
         z-index:1;
     }
@@ -81,36 +81,39 @@
         display:flex;
         justify-content:space-between;
         align-items:center;
-        margin-bottom:22px;
-        padding:0 4px;
+        margin-bottom:clamp(16px, 4vw, 22px);
+        padding:0 clamp(4px, 2vw, 4px);
     }
 
     .brand{
         display:flex;
         align-items:center;
-        gap:12px;
+        gap:clamp(8px, 2vw, 12px);
         font-weight:800;
         letter-spacing:0.04em;
+        font-size:clamp(0.8rem, 2vw, 1rem);
     }
 
     .brand-badge{
-        width:40px;
-        height:40px;
-        border-radius:14px;
+        width:clamp(32px, 8vw, 40px);
+        height:clamp(32px, 8vw, 40px);
+        border-radius:clamp(10px, 3vw, 14px);
         display:grid;
         place-items:center;
         background:linear-gradient(135deg, rgba(255,107,143,0.95), rgba(241,194,125,0.95));
         color:#09111d;
         box-shadow:0 14px 32px rgba(255,107,143,0.32);
+        flex-shrink:0;
     }
 
     .status{
-        padding:10px 14px;
+        padding:clamp(8px, 2vw, 10px) clamp(12px, 2vw, 14px);
         border:1px solid var(--line);
         border-radius:999px;
         background:rgba(255,255,255,0.03);
         color:var(--muted);
-        font-size:0.92rem;
+        font-size:clamp(0.8rem, 2vw, 0.92rem);
+        white-space:nowrap;
     }
 
     .phone{
@@ -118,46 +121,46 @@
         width:100%;
         background:linear-gradient(180deg, rgba(12,23,39,0.88), rgba(6,13,25,0.98));
         border:1px solid rgba(255,255,255,0.08);
-        border-radius:36px;
+        border-radius:clamp(24px, 6vw, 36px);
         box-shadow:var(--shadow);
         overflow:hidden;
     }
 
 
     .screen{
-        padding:42px 20px 28px;
+        padding:clamp(28px, 6vw, 42px) clamp(12px, 4vw, 20px) clamp(20px, 5vw, 28px);
         display:grid;
-        gap:18px;
+        gap:clamp(12px, 3vw, 18px);
     }
 
     .stories{
         display:grid;
         grid-template-columns:1fr;
         width:100%;
-        max-width:600px;
+        max-width:clamp(280px, 90vw, 600px);
         margin:0 auto;
-        gap:14px;
+        gap:clamp(10px, 2vw, 14px);
     }
 
     .story{
         position:relative;
         width:100%;
-        padding:15px;
-        border-radius:28px;
+        padding:clamp(12px, 3vw, 15px);
+        border-radius:clamp(20px, 5vw, 28px);
         background:linear-gradient(135deg, #ff8ea8, #ffd6a5, #8ad7ff);
         box-shadow:0 14px 32px rgba(0,0,0,0.22);
     }
 
     .story-inner{
         width:100%;
-        min-height:420px;
+        min-height:clamp(280px, 60vw, 420px);
     }
 
     .story-photo{
         position:relative;
         width:100%;
-        height:340px;
-        border-radius:22px;
+        height:clamp(240px, 50vw, 340px);
+        border-radius:clamp(16px, 4vw, 22px);
         overflow:hidden;
         background-color:rgba(6,17,31,0.35);
     }
@@ -182,25 +185,27 @@
         display:flex;
         justify-content:space-between;
         align-items:center;
-        gap:8px;
+        gap:clamp(6px, 2vw, 8px);
         position:relative;
         z-index:1;
+        margin-top:clamp(8px, 2vw, 12px);
     }
 
     .story-name{
         font-weight:800;
+        font-size:clamp(0.85rem, 2vw, 1rem);
     }
 
     .story-tag{
         color:var(--muted);
-        font-size:0.88rem;
+        font-size:clamp(0.75rem, 1.5vw, 0.88rem);
     }
 
     .hero{
         background:linear-gradient(180deg, rgba(18,31,53,0.88), rgba(10,19,34,0.95));
         border:1px solid var(--line);
-        border-radius:28px;
-        padding:26px 22px;
+        border-radius:clamp(20px, 5vw, 28px);
+        padding:clamp(18px, 5vw, 26px) clamp(16px, 4vw, 22px);
         position:relative;
         overflow:hidden;
     }
@@ -219,36 +224,36 @@
     .eyebrow{
         display:inline-flex;
         align-items:center;
-        gap:8px;
-        font-size:0.88rem;
+        gap:clamp(6px, 1vw, 8px);
+        font-size:clamp(0.7rem, 1.5vw, 0.88rem);
         letter-spacing:0.08em;
         text-transform:uppercase;
         color:var(--accent-2);
-        margin-bottom:10px;
+        margin-bottom:clamp(8px, 2vw, 10px);
     }
 
     h1{
         margin:0;
         font-family:"Cormorant Garamond", serif;
-        font-size:clamp(3rem, 7vw, 4.7rem);
+        font-size:clamp(2.2rem, 8vw, 4.7rem);
         line-height:0.95;
     }
 
     .hero p{
-        margin:14px 0 0;
+        margin:clamp(10px, 2vw, 14px) 0 0;
         color:#d8dfeb;
-        font-size:1rem;
+        font-size:clamp(0.9rem, 2vw, 1rem);
         line-height:1.7;
         max-width:680px;
     }
 
     .letter-section{
         display:grid;
-        gap:14px;
+        gap:clamp(10px, 2vw, 14px);
     }
 
     .section-title{
-        font-size:0.95rem;
+        font-size:clamp(0.8rem, 2vw, 0.95rem);
         color:var(--muted);
         letter-spacing:0.08em;
         text-transform:uppercase;
@@ -259,9 +264,9 @@
         position:relative;
         background:linear-gradient(180deg, rgba(16,29,50,0.96), rgba(9,16,29,0.96));
         border:1px solid var(--line);
-        border-radius:28px;
-        min-height:255px;
-        padding:24px;
+        border-radius:clamp(20px, 5vw, 28px);
+        min-height:clamp(200px, 45vw, 255px);
+        padding:clamp(16px, 4vw, 24px);
         overflow:hidden;
         box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
     }
@@ -269,7 +274,7 @@
     .envelope-flap{
         position:absolute;
         inset:0 0 auto 0;
-        height:120px;
+        height:clamp(80px, 20vw, 120px);
         background:linear-gradient(180deg, rgba(255,214,165,0.2), rgba(255,107,143,0.12));
         clip-path:polygon(0 0, 100% 0, 50% 100%);
         transform-origin:top;
@@ -279,11 +284,11 @@
 
     .envelope-letter{
         position:relative;
-        margin-top:62px;
+        margin-top:clamp(40px, 12vw, 62px);
         background:linear-gradient(180deg, #fff8f1, #ffe9d8);
         color:#39211b;
-        border-radius:24px;
-        padding:26px 22px 22px;
+        border-radius:clamp(18px, 4vw, 24px);
+        padding:clamp(18px, 4vw, 26px) clamp(16px, 3vw, 22px) clamp(16px, 3vw, 22px);
         transform:translateY(55px) scale(0.96);
         opacity:0;
         transition:transform 0.8s ease, opacity 0.8s ease;
@@ -300,12 +305,12 @@
     }
 
     .letter-btn{
-        margin-top:14px;
+        margin-top:clamp(10px, 2vw, 14px);
         width:100%;
         border:none;
-        border-radius:18px;
-        padding:15px 18px;
-        font-size:1rem;
+        border-radius:clamp(14px, 3vw, 18px);
+        padding:clamp(12px, 3vw, 15px) clamp(14px, 3vw, 18px);
+        font-size:clamp(0.9rem, 2vw, 1rem);
         font-weight:800;
         color:#09111d;
         background:linear-gradient(135deg, var(--accent), var(--accent-2));
@@ -318,23 +323,27 @@
         transform:translateY(-2px);
     }
 
+    .letter-btn:active{
+        transform:translateY(0);
+    }
+
     .letter-title{
-        margin:0 0 12px;
+        margin:0 0 clamp(8px, 2vw, 12px);
         font-family:"Cormorant Garamond", serif;
-        font-size:2rem;
+        font-size:clamp(1.5rem, 4vw, 2rem);
     }
 
     .letter-body{
         margin:0;
         line-height:1.75;
-        font-size:1rem;
+        font-size:clamp(0.85rem, 2vw, 1rem);
     }
 
     .proposal{
         background:linear-gradient(180deg, rgba(15,27,46,0.92), rgba(9,16,29,0.95));
         border:1px solid var(--line);
-        border-radius:28px;
-        padding:24px 20px 22px;
+        border-radius:clamp(20px, 5vw, 28px);
+        padding:clamp(18px, 4vw, 24px) clamp(14px, 4vw, 20px) clamp(16px, 3vw, 22px);
         text-align:center;
         position:relative;
         overflow:hidden;
@@ -345,27 +354,28 @@
         position:absolute;
         inset:10px;
         border:1px solid rgba(255,255,255,0.05);
-        border-radius:22px;
+        border-radius:clamp(16px, 4vw, 22px);
         pointer-events:none;
     }
 
     .proposal h2{
         margin:0;
         font-family:"Cormorant Garamond", serif;
-        font-size:2.4rem;
+        font-size:clamp(1.6rem, 5vw, 2.4rem);
     }
 
     .proposal p{
-        margin:12px auto 22px;
+        margin:clamp(10px, 2vw, 12px) auto clamp(16px, 3vw, 22px);
         max-width:520px;
         color:#d4dbea;
         line-height:1.7;
+        font-size:clamp(0.9rem, 2vw, 1rem);
     }
 
     .actions{
         display:flex;
         justify-content:center;
-        gap:12px;
+        gap:clamp(8px, 2vw, 12px);
         flex-wrap:wrap;
     }
 
@@ -373,10 +383,13 @@
         border:none;
         cursor:pointer;
         border-radius:999px;
-        padding:14px 28px;
-        font-size:1rem;
+        padding:clamp(12px, 2vw, 14px) clamp(20px, 3vw, 28px);
+        font-size:clamp(0.85rem, 2vw, 1rem);
         font-weight:800;
         transition:transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+        min-height:44px;
+        min-width:44px;
+        touch-action:manipulation;
     }
 
     .btn-primary{
@@ -395,11 +408,16 @@
         transform:translateY(-2px) scale(1.02);
     }
 
+    .btn:active{
+        transform:translateY(0) scale(1);
+    }
+
     .response{
         min-height:24px;
-        margin-top:18px;
+        margin-top:clamp(12px, 2vw, 18px);
         color:var(--accent-2);
         font-weight:700;
+        font-size:clamp(0.85rem, 2vw, 0.95rem);
     }
 
     .hearts-layer{
@@ -461,13 +479,14 @@
         display:flex;
         align-items:center;
         justify-content:center;
-        padding:20px;
+        padding:clamp(12px, 3vw, 20px);
         background:rgba(3,8,16,0.78);
         backdrop-filter:blur(8px);
         opacity:0;
         visibility:hidden;
         transition:opacity 0.3s ease, visibility 0.3s ease;
         z-index:12;
+        overflow-y:auto;
     }
 
     .video-modal.show{
@@ -479,34 +498,54 @@
         width:min(820px, 100%);
         background:linear-gradient(180deg, rgba(18,31,53,0.98), rgba(7,14,25,0.98));
         border:1px solid rgba(255,255,255,0.08);
-        border-radius:28px;
+        border-radius:clamp(18px, 5vw, 28px);
         overflow:hidden;
         box-shadow:var(--shadow);
+        margin:auto;
+        max-height:90vh;
+        display:flex;
+        flex-direction:column;
     }
 
     .video-head{
         display:flex;
         justify-content:space-between;
         align-items:center;
-        gap:16px;
-        padding:18px 20px;
+        gap:clamp(12px, 2vw, 16px);
+        padding:clamp(12px, 3vw, 18px) clamp(14px, 3vw, 20px);
         border-bottom:1px solid rgba(255,255,255,0.08);
+        flex-shrink:0;
     }
 
     .video-head h3{
         margin:0;
-        font-size:1.08rem;
+        font-size:clamp(0.95rem, 2vw, 1.08rem);
     }
 
     .close-video{
         border:none;
         border-radius:999px;
-        width:40px;
-        height:40px;
+        width:clamp(36px, 8vw, 40px);
+        height:clamp(36px, 8vw, 40px);
         background:rgba(255,255,255,0.08);
         color:var(--text);
-        font-size:1.2rem;
+        font-size:clamp(1rem, 2vw, 1.2rem);
         cursor:pointer;
+        flex-shrink:0;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        min-width:44px;
+        min-height:44px;
+        touch-action:manipulation;
+    }
+
+    .close-video:hover{
+        background:rgba(255,255,255,0.12);
+    }
+
+    .close-video:active{
+        transform:scale(0.95);
     }
 
     .video-wrap{
@@ -514,6 +553,8 @@
         padding-top:56.25%;
         background:#000;
         overflow:hidden;
+        flex-shrink:1;
+        min-height:0;
     }
 
     .video-wrap iframe,
@@ -539,7 +580,7 @@
         display:flex;
         align-items:center;
         justify-content:center;
-        padding:24px;
+        padding:clamp(16px, 3vw, 24px);
         text-align:center;
         background:
             radial-gradient(circle at top, rgba(255,107,143,0.18), transparent 35%),
@@ -553,13 +594,13 @@
     .video-fallback-inner{
         width:min(100%, 420px);
         display:grid;
-        gap:14px;
+        gap:clamp(10px, 2vw, 14px);
     }
 
     .video-fallback-title{
         margin:0;
         font-family:"Cormorant Garamond", serif;
-        font-size:2rem;
+        font-size:clamp(1.4rem, 4vw, 2rem);
         color:var(--text);
     }
 
@@ -567,52 +608,73 @@
         margin:0;
         color:#d8dfeb;
         line-height:1.7;
+        font-size:clamp(0.85rem, 2vw, 1rem);
     }
 
     .video-link{
         display:inline-flex;
         align-items:center;
         justify-content:center;
-        min-height:52px;
-        padding:14px 22px;
+        min-height:clamp(44px, 8vw, 52px);
+        padding:clamp(12px, 2vw, 14px) clamp(18px, 3vw, 22px);
         border-radius:999px;
         text-decoration:none;
         font-weight:800;
         color:#09111d;
         background:linear-gradient(135deg, #ff7b9c, #ffd6a5);
         box-shadow:0 16px 32px rgba(255,107,143,0.28);
+        font-size:clamp(0.85rem, 2vw, 1rem);
+        touch-action:manipulation;
+    }
+
+    .video-link:hover{
+        transform:translateY(-2px);
+    }
+
+    .video-link:active{
+        transform:translateY(0);
     }
 
     .video-caption{
-        padding:16px 20px 22px;
+        padding:clamp(12px, 2vw, 16px) clamp(14px, 3vw, 20px) clamp(16px, 3vw, 22px);
         color:var(--muted);
         line-height:1.7;
+        font-size:clamp(0.8rem, 1.5vw, 0.9rem);
     }
 
-    @media (max-width:720px){
-        .app{
-            width:min(100% - 16px, 1120px);
-            padding-top:16px;
+    /* Mobile pequeño (< 380px) */
+    @media (max-width:379px){
+        body::before{
+            opacity:0.35;
         }
 
+        .aurora{
+            height:35vh;
+        }
+
+        h1{
+            font-size:clamp(1.8rem, 6vw, 4.7rem);
+        }
+
+        .proposal h2{
+            font-size:clamp(1.3rem, 4vw, 2.4rem);
+        }
+
+        .letter-title{
+            font-size:clamp(1.2rem, 3vw, 2rem);
+        }
+
+        .video-card{
+            border-radius:16px;
+        }
+    }
+
+    /* Mobile (380px - 599px) */
+    @media (max-width:599px){
         .topbar{
-            gap:12px;
-            align-items:flex-start;
             flex-direction:column;
-        }
-
-        .screen{
-            padding:40px 14px 22px;
-        }
-
-        .stories{
-            grid-template-columns:1fr;
-        }
-
-        .hero,
-        .envelope,
-        .proposal{
-            border-radius:24px;
+            align-items:flex-start;
+            gap:8px;
         }
 
         .actions{
@@ -621,8 +683,232 @@
 
         .btn{
             width:100%;
+            padding:12px 16px;
+        }
+
+        .story-inner{
+            min-height:clamp(250px, 50vw, 380px);
+        }
+
+        .envelope{
+            min-height:clamp(180px, 40vw, 255px);
         }
     }
+
+    /* Tablet (600px - 899px) */
+    @media (max-width:899px){
+        .actions{
+            flex-direction:column;
+        }
+
+        .btn{
+            width:100%;
+        }
+
+        .phone{
+            border-radius:28px;
+        }
+    }
+
+    /* Tablet grande (900px+) */
+    @media (min-width:900px){
+        .actions{
+            flex-direction:row;
+            gap:16px;
+        }
+
+        .btn{
+            width:auto;
+            min-width:140px;
+        }
+
+        .btn:hover{
+            transform:translateY(-3px) scale(1.05);
+        }
+    }
+
+    /* Modo landscape */
+    @media (max-height:500px){
+        .app{
+            padding:12px 0 20px;
+        }
+
+        .screen{
+            gap:10px;
+        }
+
+        .stories{
+            max-width:clamp(250px, 80vw, 500px);
+        }
+
+        .story-inner{
+            min-height:280px;
+        }
+
+        .story-photo{
+            height:220px;
+        }
+
+        .hero{
+            padding:14px 16px;
+        }
+
+        .envelope{
+            min-height:180px;
+            padding:12px;
+        }
+
+        .envelope-flap{
+            height:80px;
+        }
+
+        .envelope-letter{
+            margin-top:40px;
+            padding:14px 16px 12px;
+        }
+    }
+
+    /* Devices muy pequeños */
+    @media (max-width:320px){
+        .hero p{
+            font-size:0.8rem;
+        }
+
+        h1{
+            font-size:1.5rem;
+        }
+
+        .eyebrow{
+            font-size:0.65rem;
+        }
+
+        .proposal h2{
+            font-size:1.2rem;
+        }
+
+        .letter-title{
+            font-size:1.1rem;
+        }
+    }
+
+    /* Print */
+    @media print{
+        .video-modal,
+        .close-video,
+        .btn{
+            display:none;
+        }
+
+        .app{
+            box-shadow:none;
+        }
+
+        body{
+            background:#fff;
+            color:#000;
+        }
+    }
+
+    /* Sistema de secciones */
+    .section-container{
+        display:grid;
+        gap:clamp(12px, 3vw, 18px);
+    }
+
+    .section-item{
+        display:none;
+        opacity:0;
+        transition:opacity 0.4s ease;
+    }
+
+    .section-item.active{
+        display:block;
+        opacity:1;
+    }
+
+    .section-nav{
+        display:flex;
+        justify-content:center;
+        gap:clamp(10px, 2vw, 14px);
+        margin-top:clamp(14px, 3vw, 20px);
+        flex-wrap:wrap;
+    }
+
+    .next-btn{
+        border:none;
+        cursor:pointer;
+        border-radius:999px;
+        padding:clamp(12px, 2vw, 14px) clamp(24px, 3vw, 32px);
+        font-size:clamp(0.85rem, 2vw, 1rem);
+        font-weight:800;
+        transition:transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+        color:#09111d;
+        background:linear-gradient(135deg, #ff7b9c, #ffd6a5);
+        box-shadow:0 16px 32px rgba(255,107,143,0.28);
+        min-height:44px;
+        min-width:44px;
+        touch-action:manipulation;
+    }
+
+    .next-btn:hover{
+        transform:translateY(-2px) scale(1.02);
+    }
+
+    .next-btn:active{
+        transform:translateY(0) scale(1);
+    }
+
+    .next-btn:disabled{
+        opacity:0.5;
+        cursor:not-allowed;
+        transform:none;
+    }
+
+    .back-btn{
+        border:none;
+        cursor:pointer;
+        border-radius:999px;
+        padding:clamp(12px, 2vw, 14px) clamp(24px, 3vw, 32px);
+        font-size:clamp(0.85rem, 2vw, 1rem);
+        font-weight:800;
+        transition:transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+        color:var(--text);
+        background:rgba(255,255,255,0.05);
+        border:1px solid rgba(255,255,255,0.08);
+        min-height:44px;
+        min-width:44px;
+        touch-action:manipulation;
+    }
+
+    .back-btn:hover{
+        transform:translateY(-2px) scale(1.02);
+        background:rgba(255,255,255,0.1);
+    }
+
+    .back-btn:active{
+        transform:translateY(0) scale(1);
+    }
+
+    .back-btn:disabled{
+        opacity:0.5;
+        cursor:not-allowed;
+        transform:none;
+    }
+
+    .letter-body{
+        margin:0;
+        line-height:2;
+        font-size:clamp(0.85rem, 2vw, 1rem);
+        white-space:pre-line;
+    }
+
+    .section-counter{
+        font-size:clamp(0.8rem, 1.5vw, 0.9rem);
+        color:var(--muted);
+        text-align:center;
+        margin-top:clamp(8px, 2vw, 12px);
+    }
+
 </style>
 </head>
 <body>
@@ -636,34 +922,42 @@
 
     <main class="phone">
         <div class="screen">
-            <section class="stories">
-                <article class="story">
-                    <div class="story-inner">
-                        <div class="story-photo">
-                            <img src="EllayYo.jpeg" alt="Foto de ustedes">
-                        </div>
-                        <div class="story-meta">
-                        </div>
-                    </div>
-                </article>
-            </section>
+            <div class="section-container">
+                <!-- Sección 1: Foto -->
+                <section class="section-item active" id="section-1">
+                    <section class="stories">
+                        <article class="story">
+                            <div class="story-inner">
+                                <div class="story-photo">
+                                    <img src="EllayYo.jpeg" alt="Foto de ustedes">
+                                </div>
+                                <div class="story-meta">
+                                </div>
+                            </div>
+                        </article>
+                    </section>
+                </section>
 
-            <section class="hero">
-                <div class="eyebrow"> princesita hermosa</div>
-                <h1>Tami</h1>
-                <p>
+                <!-- Sección 2: Princesita hermosa -->
+                <section class="section-item" id="section-2">
+                    <section class="hero">
+                        <div class="eyebrow"> princesita hermosa</div>
+                        <h1>Tami</h1>
+                        <p>
 Desde que llegaste a mi vida, tengo más estrés jjj, na mentira; sonrío más y mi corazón late diferente. 
 Hoy quiero dejar de imaginar lo nuestro y empezar a vivirlo contigo
-                </p>
-            </section>
+                        </p>
+                    </section>
+                </section>
 
-            <section class="letter-section">
-                <div class="envelope" id="envelope">
-                    <div class="envelope-flap"></div>
-                    <div class="envelope-letter">
-                        <h2 class="letter-title">Sin pensarlo</h2>
-                        <p class="letter-body">
-                            No sé en qué momento llegaste,
+                <!-- Sección 3: Carta -->
+                <section class="section-item" id="section-3">
+                    <section class="letter-section">
+                        <div class="envelope" id="envelope">
+                            <div class="envelope-flap"></div>
+                            <div class="envelope-letter">
+                                <h2 class="letter-title">Sin pensarlo</h2>
+                                <p class="letter-body">No sé en qué momento llegaste,
 ni cuándo empezaste a quedarte en mis pensamientos,
 solo sé que desde tu sonrisa
 mis días aprendieron a ser más felices.
@@ -671,21 +965,32 @@ mis días aprendieron a ser más felices.
 Si pudiera regalarte algo,
 te daría mis amaneceres,
 mis sueños más sinceros
-y cada latido que pronuncia tu nombre.
-                        </p>
-                    </div>
-                </div>
-                <button class="letter-btn" id="openLetterBtn">Abrir la carta</button>
-            </section>
+y cada latido que pronuncia tu nombre.</p>
+                            </div>
+                        </div>
+                        <button class="letter-btn" id="openLetterBtn">Abrir la carta</button>
+                    </section>
+                </section>
 
-            <section class="proposal">
-                <h2>¿Quieres ser mi novia?</h2>
-                <div class="actions">
-                    <button class="btn btn-primary" id="yesBtn">Sí, quiero</button>
-                    <button class="btn btn-secondary" id="noBtn">Me haces sufrir</button>
+                <!-- Sección 4: Pregunta -->
+                <section class="section-item" id="section-4">
+                    <section class="proposal">
+                        <h2>¿Quieres ser mi novia?</h2>
+                        <div class="actions">
+                            <button class="btn btn-primary" id="yesBtn">Sí, quiero</button>
+                            <button class="btn btn-secondary" id="noBtn">Me haces sufrir</button>
+                        </div>
+                        <div class="response" id="response"></div>
+                    </section>
+                </section>
+
+                <!-- Navegación entre secciones -->
+                <div class="section-nav" id="sectionNav">
+                    <button class="back-btn" id="backBtn" style="display:none;">Atrás</button>
+                    <button class="next-btn" id="nextBtn">Siguiente</button>
                 </div>
-                <div class="response" id="response"></div>
-            </section>
+                <div class="section-counter" id="sectionCounter">1 de 4</div>
+            </div>
         </div>
     </main>
 </div>
@@ -731,6 +1036,63 @@ y cada latido que pronuncia tu nombre.
     const musicVideoUrl = "https://youtu.be/whdnNvybrF4?si=3wjlZDrQsq8ENmcV";
     const musicVideoId = "whdnNvybrF4";
 
+    // ===== SISTEMA DE SECCIONES =====
+    let currentSection = 1;
+    const totalSections = 4;
+    const nextBtn = document.getElementById("nextBtn");
+    const backBtn = document.getElementById("backBtn");
+    const sectionCounter = document.getElementById("sectionCounter");
+
+    function showSection(sectionNumber){
+        // Ocultar todas las secciones
+        for(let i = 1; i <= totalSections; i++){
+            const section = document.getElementById("section-" + i);
+            section.classList.remove("active");
+        }
+
+        // Mostrar la sección actual
+        const activeSection = document.getElementById("section-" + sectionNumber);
+        activeSection.classList.add("active");
+
+        // Actualizar contador
+        sectionCounter.textContent = sectionNumber + " de " + totalSections;
+
+        // Mostrar/Ocultar botón Atrás solo desde la sección 2 en adelante
+        if(sectionNumber === 1){
+            backBtn.style.display = "none";
+        } else {
+            backBtn.style.display = "inline-block";
+        }
+
+        if(sectionNumber === totalSections){
+            nextBtn.textContent = "Comenzar";
+            nextBtn.style.pointerEvents = "none";
+            nextBtn.style.opacity = "0.6";
+        } else {
+            nextBtn.textContent = "Siguiente";
+            nextBtn.style.pointerEvents = "auto";
+            nextBtn.style.opacity = "1";
+        }
+
+        // Scroll al inicio
+        window.scrollTo({top: 0, behavior: "smooth"});
+    }
+
+    nextBtn.addEventListener("click", () => {
+        if(currentSection < totalSections){
+            currentSection++;
+            showSection(currentSection);
+        }
+    });
+
+    backBtn.addEventListener("click", () => {
+        if(currentSection > 1){
+            currentSection--;
+            showSection(currentSection);
+        }
+    });
+
+    // ===== FUNCIONALIDAD EXISTENTE =====
     const openLetterBtn = document.getElementById("openLetterBtn");
     const envelope = document.getElementById("envelope");
     const yesBtn = document.getElementById("yesBtn");
@@ -761,6 +1123,21 @@ y cada latido que pronuncia tu nombre.
         noBtn.style.transform = "";
     });
 
+    // Soporte para touch en móviles
+    noBtn.addEventListener("touchstart", () => {
+        const shiftX = Math.floor(Math.random() * 30) - 15;
+        const shiftY = Math.floor(Math.random() * 30) - 15;
+        noBtn.style.transform = "translate(" + shiftX + "px," + shiftY + "px)";
+        response.textContent = "Esa opción no combina con esta historia.";
+    });
+
+    noBtn.addEventListener("touchend", () => {
+        // Dejar el botón en la posición por un tiempo
+        setTimeout(() => {
+            noBtn.style.transform = "";
+        }, 300);
+    });
+
     yesBtn.addEventListener("click", () => {
         response.textContent = "Sabía que este momento iba a ser hermoso.";
         openVideo();
@@ -773,12 +1150,16 @@ y cada latido que pronuncia tu nombre.
     function openVideo(){
         videoModal.classList.add("show");
         videoModal.setAttribute("aria-hidden", "false");
-        resizeCanvas();
+        document.body.style.overflow = "hidden";
+        setTimeout(() => {
+            resizeCanvas();
+        }, 100);
     }
 
     function closeVideo(){
         videoModal.classList.remove("show");
         videoModal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
     }
 
     closeVideoBtn.addEventListener("click", closeVideo);
@@ -804,17 +1185,43 @@ y cada latido que pronuncia tu nombre.
 
     function resizeCanvas(){
         const bounds = videoContainer.getBoundingClientRect();
-        canvas.width = Math.max(Math.floor(bounds.width), 1);
-        canvas.height = Math.max(Math.floor(bounds.height), 1);
+        const width = Math.max(Math.floor(bounds.width), 1);
+        const height = Math.max(Math.floor(bounds.height), 1);
+        
+        if(canvas.width !== width || canvas.height !== height){
+            canvas.width = width;
+            canvas.height = height;
+        }
     }
 
-    window.addEventListener("resize", resizeCanvas);
+    let resizeTimeout;
+    
+    window.addEventListener("resize", () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(resizeCanvas, 250);
+    });
+    
+    // Observer para detectar cambios en el contenedor
+    if(typeof ResizeObserver !== 'undefined'){
+        const resizeObserver = new ResizeObserver(resizeCanvas);
+        resizeObserver.observe(videoContainer);
+    }
+
+    // Inicializar canvas
+    window.addEventListener("load", () => {
+        resizeCanvas();
+    });
     resizeCanvas();
+
+    // Detectar si es dispositivo móvil
+    const isMobile = window.matchMedia("(max-width: 599px)").matches;
 
     function createBurst(x, y){
         const palette = ["#ff7b9c", "#ffd6a5", "#7fd8ff", "#fff0d9", "#f8a5c2"];
-        for(let i = 0; i < 90; i += 1){
-            const angle = (Math.PI * 2 * i) / 90;
+        // Reducir partículas en móviles para mejor rendimiento
+        const particleCount = isMobile ? 45 : 90;
+        for(let i = 0; i < particleCount; i += 1){
+            const angle = (Math.PI * 2 * i) / particleCount;
             const speed = Math.random() * 4 + 1.5;
             particles.push({
                 x,
