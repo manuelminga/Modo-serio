@@ -696,7 +696,14 @@ y cada latido que pronuncia tu nombre.
             <button class="close-video" id="closeVideoBtn" aria-label="Cerrar video">×</button>
         </div>
         <div class="video-wrap" id="videoContainer">
-            <div id="youtubePlayer" class="youtube-player" aria-hidden="true"></div>
+            <iframe
+                id="youtubePlayer"
+                class="youtube-player"
+                src="https://www.youtube.com/embed/whdnNvybrF4?autoplay=1&modestbranding=1&rel=0&playsinline=1"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen=""
+                title="Video de YouTube">
+            </iframe>
             <div class="video-fallback hidden" id="videoFallback">
                 <div class="video-fallback-inner">
                     <h3 class="video-fallback-title">Esta canción va aquí</h3>
@@ -732,12 +739,9 @@ y cada latido que pronuncia tu nombre.
     const videoModal = document.getElementById("videoModal");
     const closeVideoBtn = document.getElementById("closeVideoBtn");
     const videoContainer = document.getElementById("videoContainer");
-    const youtubePlayerNode = document.getElementById("youtubePlayer");
     const videoFallback = document.getElementById("videoFallback");
     const videoLink = document.getElementById("videoLink");
     const heartsLayer = document.getElementById("heartsLayer");
-    let youtubePlayer = null;
-    let youtubeApiPromise = null;
 
     openLetterBtn.addEventListener("click", () => {
         envelope.classList.toggle("open");
@@ -764,97 +768,17 @@ y cada latido que pronuncia tu nombre.
         launchHearts();
     });
 
-    function showVideoFallback(){
-        videoFallback.classList.remove("hidden");
-        videoLink.href = musicVideoUrl;
-    }
 
-    function hideVideoFallback(){
-        videoFallback.classList.add("hidden");
-    }
-
-    function loadYouTubeApi(){
-        if (window.YT && window.YT.Player) {
-            return Promise.resolve(window.YT);
-        }
-
-        if (youtubeApiPromise) {
-            return youtubeApiPromise;
-        }
-
-        youtubeApiPromise = new Promise((resolve, reject) => {
-            const previousReady = window.onYouTubeIframeAPIReady;
-            const script = document.createElement("script");
-            script.src = "https://www.youtube.com/iframe_api";
-            script.async = true;
-            script.onerror = () => reject(new Error("youtube-api-load-failed"));
-
-            window.onYouTubeIframeAPIReady = () => {
-                if (typeof previousReady === "function") {
-                    previousReady();
-                }
-                resolve(window.YT);
-            };
-
-            document.head.appendChild(script);
-        });
-
-        return youtubeApiPromise;
-    }
-
-    function ensureYouTubePlayer(){
-        return loadYouTubeApi().then((YT) => {
-            if (youtubePlayer) {
-                return youtubePlayer;
-            }
-
-            youtubePlayer = new YT.Player(youtubePlayerNode, {
-                videoId: musicVideoId,
-                playerVars: {
-                    autoplay: 1,
-                    playsinline: 1,
-                    rel: 0
-                },
-                events: {
-                    onReady: (event) => {
-                        hideVideoFallback();
-                        event.target.playVideo();
-                    },
-                    onError: () => {
-                        showVideoFallback();
-                    }
-                }
-            });
-
-            return youtubePlayer;
-        });
-    }
 
     function openVideo(){
-        hideVideoFallback();
-        videoLink.href = musicVideoUrl;
         videoModal.classList.add("show");
         videoModal.setAttribute("aria-hidden", "false");
         resizeCanvas();
-
-        ensureYouTubePlayer()
-            .then((player) => {
-                if (typeof player.loadVideoById === "function") {
-                    player.loadVideoById(musicVideoId);
-                }
-            })
-            .catch(() => {
-                showVideoFallback();
-            });
     }
 
     function closeVideo(){
         videoModal.classList.remove("show");
         videoModal.setAttribute("aria-hidden", "true");
-
-        if (youtubePlayer && typeof youtubePlayer.stopVideo === "function") {
-            youtubePlayer.stopVideo();
-        }
     }
 
     closeVideoBtn.addEventListener("click", closeVideo);
