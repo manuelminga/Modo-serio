@@ -402,6 +402,40 @@
         font-weight:700;
     }
 
+    .hearts-layer{
+        position:absolute;
+        inset:0;
+        overflow:hidden;
+        pointer-events:none;
+        z-index:3;
+    }
+
+    .heart-burst{
+        position:absolute;
+        top:100%;
+        font-size:clamp(20px, 3vw, 34px);
+        line-height:1;
+        opacity:0;
+        transform:translate3d(0, 0, 0) scale(0.8) rotate(0deg);
+        animation:float-heart 3.8s ease-out forwards;
+        filter:drop-shadow(0 0 14px rgba(255,107,143,0.35));
+        will-change:transform, opacity;
+    }
+
+    @keyframes float-heart{
+        0%{
+            opacity:0;
+            transform:translate3d(0, 0, 0) scale(0.5) rotate(0deg);
+        }
+        12%{
+            opacity:1;
+        }
+        100%{
+            opacity:0;
+            transform:translate3d(var(--drift-x), -115%, 0) scale(1.2) rotate(var(--spin));
+        }
+    }
+
     .footer-note{
         color:var(--muted);
         text-align:center;
@@ -413,12 +447,12 @@
     }
 
     #fireworks{
-        position:fixed;
+        position:absolute;
         inset:0;
         width:100%;
         height:100%;
         pointer-events:none;
-        z-index:8;
+        z-index:2;
     }
 
     .video-modal{
@@ -479,6 +513,7 @@
         position:relative;
         padding-top:56.25%;
         background:#000;
+        overflow:hidden;
     }
 
     .video-wrap iframe,
@@ -488,6 +523,7 @@
         width:100%;
         height:100%;
         border:0;
+        z-index:1;
     }
 
     .video-caption{
@@ -533,7 +569,6 @@
 </style>
 </head>
 <body>
-<canvas id="fireworks"></canvas>
 <div class="aurora"></div>
 
 <div class="app">
@@ -611,13 +646,15 @@ y cada latido que pronuncia tu nombre.
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen>
             </iframe>
+            <canvas id="fireworks"></canvas>
+            <div class="hearts-layer" id="heartsLayer" aria-hidden="true"></div>
         </div>
 
     </div>
 </div>
 
 <script>
-    const musicVideoUrl = "https://www.youtube.com/embed/450p7goxZqg?autoplay=1&rel=0";
+    const musicVideoUrl = "https://www.youtube.com/watch?v=jJRvUOVxPqA&list=RDjJRvUOVxPqA&start_radio=1";
 
     const openLetterBtn = document.getElementById("openLetterBtn");
     const envelope = document.getElementById("envelope");
@@ -626,7 +663,9 @@ y cada latido que pronuncia tu nombre.
     const response = document.getElementById("response");
     const videoModal = document.getElementById("videoModal");
     const closeVideoBtn = document.getElementById("closeVideoBtn");
+    const videoContainer = document.getElementById("videoContainer");
     const musicFrame = document.getElementById("musicFrame");
+    const heartsLayer = document.getElementById("heartsLayer");
 
     openLetterBtn.addEventListener("click", () => {
         envelope.classList.toggle("open");
@@ -649,6 +688,7 @@ y cada latido que pronuncia tu nombre.
     yesBtn.addEventListener("click", () => {
         response.textContent = "Sabía que este momento iba a ser hermoso.";
         launchFireworks();
+        launchHearts();
         openVideo();
     });
 
@@ -656,6 +696,7 @@ y cada latido que pronuncia tu nombre.
         musicFrame.src = musicVideoUrl;
         videoModal.classList.add("show");
         videoModal.setAttribute("aria-hidden", "false");
+        resizeCanvas();
     }
 
     function closeVideo(){
@@ -683,10 +724,12 @@ y cada latido que pronuncia tu nombre.
     let particles = [];
     let fireworkFrame = null;
     let burstCount = 0;
+    let heartWaveTimeout = null;
 
     function resizeCanvas(){
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const bounds = videoContainer.getBoundingClientRect();
+        canvas.width = Math.max(Math.floor(bounds.width), 1);
+        canvas.height = Math.max(Math.floor(bounds.height), 1);
     }
 
     window.addEventListener("resize", resizeCanvas);
@@ -708,6 +751,50 @@ y cada latido que pronuncia tu nombre.
                 gravity: 0.03 + Math.random() * 0.03
             });
         }
+    }
+
+    function createHeart(){
+        const heart = document.createElement("span");
+        const tones = ["#ff7b9c", "#ffd6a5", "#ffc0d2", "#fff0d9", "#ff9eb6"];
+        heart.className = "heart-burst";
+        heart.textContent = Math.random() > 0.35 ? "\u2764" : "\u2661";
+        heart.style.left = Math.random() * 100 + "%";
+        heart.style.color = tones[Math.floor(Math.random() * tones.length)];
+        heart.style.animationDuration = (3 + Math.random() * 2.2).toFixed(2) + "s";
+        heart.style.animationDelay = (Math.random() * 0.35).toFixed(2) + "s";
+        heart.style.setProperty("--drift-x", (Math.random() * 180 - 90).toFixed(0) + "px");
+        heart.style.setProperty("--spin", (Math.random() * 90 - 45).toFixed(0) + "deg");
+        heartsLayer.appendChild(heart);
+
+        heart.addEventListener("animationend", () => {
+            heart.remove();
+        }, { once:true });
+    }
+
+    function launchHearts(){
+        if (heartWaveTimeout) {
+            clearTimeout(heartWaveTimeout);
+        }
+
+        heartsLayer.innerHTML = "";
+
+        let waves = 0;
+
+        function spawnWave(){
+            for(let i = 0; i < 18; i += 1){
+                createHeart();
+            }
+
+            waves += 1;
+
+            if(waves < 7){
+                heartWaveTimeout = setTimeout(spawnWave, 260);
+            } else {
+                heartWaveTimeout = null;
+            }
+        }
+
+        spawnWave();
     }
 
     function animateFireworks(){
@@ -743,10 +830,12 @@ y cada latido que pronuncia tu nombre.
         particles = [];
 
         const bursts = setInterval(() => {
-            createBurst(
-                Math.random() * canvas.width * 0.8 + canvas.width * 0.1,
-                Math.random() * canvas.height * 0.45 + canvas.height * 0.1
-            );
+            for(let i = 0; i < 2; i += 1){
+                createBurst(
+                    Math.random() * canvas.width * 0.92 + canvas.width * 0.04,
+                    Math.random() * canvas.height * 0.62 + canvas.height * 0.04
+                );
+            }
             burstCount += 1;
 
             if (burstCount >= 6) {
