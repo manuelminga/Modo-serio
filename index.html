@@ -333,6 +333,9 @@
         cursor:pointer;
         transition:transform 0.25s ease, box-shadow 0.25s ease;
         box-shadow:0 15px 30px rgba(255,107,143,0.28);
+        width: fit-content;
+        align-self: center;
+        padding: 12px 24px;
     }
 
     .letter-btn:hover{
@@ -965,6 +968,10 @@
         margin-top:clamp(8px, 2vw, 12px);
     }
 
+    .close-letter-btn{
+    display: none;
+    }
+
 </style>
 </head>
 <body>
@@ -985,7 +992,7 @@
                         <article class="story">
                             <div class="story-inner">
                                 <div class="story-photo">
-                                    <img src="EllayYo.jpeg" alt="Foto de ustedes">
+                                    <img src="demo" alt="Foto de ustedes">
                                 </div>
                                 <div class="story-meta">
                                 </div>
@@ -999,9 +1006,9 @@
                 <section class="section-item" id="section-2">
                     <section class="hero">
                         <div class="eyebrow"> princesita hermosa</div>
-                        <h1>Tami</h1>
+                        <h1>Nombre</h1>
                         <p>
-Desde que llegaste a mi vida, tengo más estrés jjj, na mentira; sonrío más y mi corazón late diferente. 
+Desde que llegaste a mi vida; sonrío más y mi corazón late diferente.
 Hoy quiero dejar de imaginar lo nuestro y empezar a vivirlo contigo
                         </p>
                     </section>
@@ -1010,6 +1017,7 @@ Hoy quiero dejar de imaginar lo nuestro y empezar a vivirlo contigo
                 <!-- Sección 3: Carta -->
                 <section class="section-item" id="section-3">
                     <section class="letter-section">
+                        <button class="letter-btn" id="openLetterBtn">Abrir</button>
                         <div class="envelope" id="envelope">
                             <div class="heart-container" id="heartContainer">
                                 <svg class="heart-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -1021,7 +1029,7 @@ Hoy quiero dejar de imaginar lo nuestro y empezar a vivirlo contigo
                                     </defs>
                                     <path class="heart-svg-bg" d="M50,95 C25,80 5,65 5,50 C5,35 15,25 25,25 C35,25 45,35 50,42 C55,35 65,25 75,25 C85,25 95,35 95,50 C95,65 75,80 50,95 Z"/>
                                 </svg>
-                                <img src="tam.jpeg" alt="Foto de Tami" class="heart-image-mask">
+                                <img src="demo" alt="Foto" class="heart-image-mask">
                             </div>
                             <div class="envelope-flap"></div>
                             <div class="envelope-letter">
@@ -1036,8 +1044,8 @@ te daría mis amaneceres,
 mis sueños más sinceros
 y cada latido que pronuncia tu nombre.</p>
                             </div>
+                            <button class="letter-btn close-letter-btn" id="closeLetterBtn">Cerrar</button>
                         </div>
-                        <button class="letter-btn" id="openLetterBtn">Abrir la carta</button>
                     </section>
                 </section>
 
@@ -1134,10 +1142,9 @@ y cada latido que pronuncia tu nombre.</p>
         }
 
         if(sectionNumber === totalSections){
-            nextBtn.textContent = "Comenzar";
-            nextBtn.style.pointerEvents = "none";
-            nextBtn.style.opacity = "0.6";
+            nextBtn.style.display = "none";
         } else {
+            nextBtn.style.display = "inline-block";
             nextBtn.textContent = "Siguiente";
             nextBtn.style.pointerEvents = "auto";
             nextBtn.style.opacity = "1";
@@ -1163,10 +1170,17 @@ y cada latido que pronuncia tu nombre.</p>
 
     // ===== FUNCIONALIDAD EXISTENTE =====
     const openLetterBtn = document.getElementById("openLetterBtn");
+    const closeLetterBtn = document.getElementById("closeLetterBtn");
     const heartContainer = document.getElementById("heartContainer");
     const envelope = document.getElementById("envelope");
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
+    let yesBtnScale = 1;
+    noBtn.addEventListener("click", () => {
+        yesBtnScale += 0.70;
+        yesBtn.style.transform = "scale(" + yesBtnScale + ")";
+    });
+
     const response = document.getElementById("response");
     const videoModal = document.getElementById("videoModal");
     const closeVideoBtn = document.getElementById("closeVideoBtn");
@@ -1175,17 +1189,23 @@ y cada latido que pronuncia tu nombre.</p>
     const videoLink = document.getElementById("videoLink");
     const heartsLayer = document.getElementById("heartsLayer");
 
-    function toggleLetter(){
-        envelope.classList.toggle("open");
-        openLetterBtn.textContent = envelope.classList.contains("open")
-            ? "Cerrar la carta"
-            : "Abrir la carta";
+    function openLetter(){
+        envelope.classList.add("open");
+        openLetterBtn.style.display = "none";
+        closeLetterBtn.style.display = "inline-block";
     }
 
-    openLetterBtn.addEventListener("click", toggleLetter);
+    function closeLetter(){
+        envelope.classList.remove("open");
+        openLetterBtn.style.display = "inline-block";
+        closeLetterBtn.style.display = "none";
+    }
+
+    openLetterBtn.addEventListener("click", openLetter);
+    closeLetterBtn.addEventListener("click", closeLetter);
     
     // El corazón también abre la carta
-    heartContainer.addEventListener("click", toggleLetter);
+    heartContainer.addEventListener("click", openLetter);
 
     noBtn.addEventListener("mouseenter", () => {
         const shiftX = Math.floor(Math.random() * 20) - 10;
